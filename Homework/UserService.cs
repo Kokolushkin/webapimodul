@@ -175,13 +175,13 @@ namespace Homework
                         email,
                     });
 
-                if (checkUniqueName != null && checkUniqueEmail != null)
+                if (checkUniqueName == null && checkUniqueEmail == null)
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
             }
         }
