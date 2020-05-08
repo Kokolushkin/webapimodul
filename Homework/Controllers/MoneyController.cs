@@ -55,35 +55,23 @@ namespace Homework.Controllers
             {
                 if (accountFrom.AccountNumber != accountTo.AccountNumber)
                 {
-                    if (accountFrom != null && accountTo != null)
+                    if (_service.Transfer(accountFrom, accountTo, user.HowMuch))
                     {
-                        if (_service.Transfer(accountFrom, accountTo, user.HowMuch))
+                        var response = new
                         {
-                            var response = new
-                            {
-                                result = "Успешно"
-                            };
+                            result = "Успешно"
+                        };
 
-                            return new OkObjectResult(response);
-                        }
-                        else
-                        {
-                            var errorTransfer = new
-                            {
-                                error = "Недостаточно средств"
-                            };
-
-                            return new BadRequestObjectResult(errorTransfer);
-                        }
+                        return new OkObjectResult(response);
                     }
                     else
                     {
-                        var errorAccountNumber = new
+                        var errorTransfer = new
                         {
-                            error = "Вы ввели неправильный номер счета"
+                            error = "Недостаточно средств"
                         };
 
-                        return new BadRequestObjectResult(errorAccountNumber);
+                        return new BadRequestObjectResult(errorTransfer);
                     }
                 }
                 else
