@@ -11,9 +11,9 @@ namespace Homework
         {
 
         }
-        public User(string usernaname, string password)
+        public User(string email, string password)
         {
-            Username = usernaname;
+            Username = email;
             _password = new Password(password);
         }
 

@@ -51,36 +51,60 @@ namespace Homework.Controllers
             User accountFrom = _service.GetUser(user.FromAccount);
             User accountTo = _service.GetUser(user.ToAccount);
 
-            if (accountFrom != null && accountTo != null)
+            if(accountFrom != null && accountTo != null)
             {
-                if (_service.Transfer(accountFrom, accountTo, user.HowMuch))
+                if (accountFrom.AccountNumber != accountTo.AccountNumber)
                 {
-                    var response = new
+                    if (accountFrom != null && accountTo != null)
                     {
-                        result = "Успешно"
-                    };
+                        if (_service.Transfer(accountFrom, accountTo, user.HowMuch))
+                        {
+                            var response = new
+                            {
+                                result = "Успешно"
+                            };
 
-                    return new OkObjectResult(response);
+                            return new OkObjectResult(response);
+                        }
+                        else
+                        {
+                            var errorTransfer = new
+                            {
+                                error = "Недостаточно средств"
+                            };
+
+                            return new BadRequestObjectResult(errorTransfer);
+                        }
+                    }
+                    else
+                    {
+                        var errorAccountNumber = new
+                        {
+                            error = "Вы ввели неправильный номер счета"
+                        };
+
+                        return new BadRequestObjectResult(errorAccountNumber);
+                    }
                 }
                 else
                 {
-                    var errorTransfer = new
+                    var errorAccountNumber = new
                     {
-                        error = "Недостаточно средств"
+                        error = "Счет отправителя и получателя совпадает"
                     };
 
-                    return new BadRequestObjectResult(errorTransfer);
+                    return new BadRequestObjectResult(errorAccountNumber);
                 }
             }
             else
             {
                 var errorAccountNumber = new
                 {
-                    error = "Вы ввели неправильный номер счета"
+                    error = "Возможно, вы ввели не корректный номер счета"
                 };
 
                 return new BadRequestObjectResult(errorAccountNumber);
-            }
+            }  
         }
     }
 }

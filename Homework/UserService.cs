@@ -20,10 +20,19 @@ namespace Homework
     }
     public class UserService : IUserService
     {
-        public bool IsValidUser(string username, string password)
+        public bool IsValidUser(string email, string password)
         {
-            var testUser = new User(username, password);
-            return Password.CheckPassword(password, testUser.Salt, testUser.Password);
+            var testSalt = GetSalt(email);
+            var testPasswordHash = GetPasswordHash(email);
+
+            if(testSalt != null && testPasswordHash != null && Password.CheckPassword(password, testSalt, testPasswordHash))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool isValidEmail(string email)
@@ -92,6 +101,38 @@ namespace Homework
                     });
 
                     return result;
+            }
+        }
+
+        private string GetSalt(string email)
+        {
+            using (var conn = CreateConnection())
+            {
+                conn.Open();
+
+                var result = conn.QuerySingleOrDefault<string>("SELECT salt FROM users1 WHERE email = @email;",
+                new
+                {
+                    email,
+                });
+
+                return result;
+            }
+        }
+
+        private string GetPasswordHash(string email)
+        {
+            using (var conn = CreateConnection())
+            {
+                conn.Open();
+
+                var result = conn.QuerySingleOrDefault<string>("SELECT passwordhash FROM users1 WHERE email = @email;",
+                new
+                {
+                    email,
+                });
+
+                return result;
             }
         }
 

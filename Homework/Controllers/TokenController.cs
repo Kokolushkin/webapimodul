@@ -105,7 +105,7 @@ namespace Homework.Controllers
             {
                 var errorEmail = new
                 {
-                    error = "Вы ввели не верный email"
+                    error = "Вы ввели не корректный email"
                 };
 
                 return new BadRequestObjectResult(errorEmail);
@@ -124,12 +124,11 @@ namespace Homework.Controllers
                 _authOptions.Issuer,
                 _authOptions.Audience,
                 authClaims,
-                default, DateTime.Now.AddHours(_authOptions.ExpiresInMinute),
+                DateTime.Now, DateTime.Now.AddMinutes(_authOptions.ExpiresInMinute),
                 new SigningCredentials
                     (new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authOptions.SecureKey)),
                     SecurityAlgorithms.HmacSha256Signature)
                 );
-
             return token;
         }
     }
