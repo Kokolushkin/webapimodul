@@ -13,8 +13,8 @@ namespace Homework
         public string Password { get; set; }
         public string PasswordConfirm { get; set; }
         public string Salt { get; set; }
-        public int AccountNumber { get; set; }
-        public int Balance { get; set; }
+        public long AccountNumber { get; set; }
+        public double Balance { get; set; }
         public long ToAccount { get; set; }
         public long FromAccount { get; set; }
         public double HowMuch { get; set; }

@@ -30,7 +30,7 @@ namespace Homework
         public string Email { get; set; }
         public string Password => _password.PasswordHash;
         public string Salt => _password.Salt;
-        public double AccountNumber { get; set; }
+        public long AccountNumber { get; set; }
         public double Balance { get; set; }
     }
 }
